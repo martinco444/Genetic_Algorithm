@@ -21,7 +21,7 @@ function crearPoblacion(tamanoPoblacion, longitudCromosoma) {
 
 // Ejemplo de uso
 const tamanoPoblacion = 50; // Tamaño de la población
-const longitudCromosoma = 10; // Longitud de cada cromosoma (ajusta según tu problema)
+const longitudCromosoma = 5; // Longitud de cada cromosoma (ajusta según tu problema)
 
 const poblacionInicial = crearPoblacion(tamanoPoblacion, longitudCromosoma);
 console.log(poblacionInicial);
