@@ -3,7 +3,7 @@ function crearCromosoma(longitud) {
     let cromosoma = [];
     for (let i = 0; i < longitud; i++) {
         // Genera genes aleatorios 
-        let gen = (Math.random()*8) + 1; // Genera genes binarios
+        let gen = Math.floor(Math.random()*8); // Generador de cromosomas
         cromosoma.push(gen);
     }
 
@@ -23,15 +23,49 @@ function crearPoblacion(tamanoPoblacion, longitudCromosoma) {
 
 }
 
-const tamanoPoblacion = 10; // Tamaño de la población
-const longitudCromosoma = 5; // Longitud de cada cromosoma 
+const tamanoPoblacion = 500; // Tamaño de la población
+const longitudCromosoma = 8; // Longitud de cada cromosoma 
 
 const poblacionInicial = crearPoblacion(tamanoPoblacion, longitudCromosoma);
 console.log(poblacionInicial);
 
+// Función de fitness para evaluar un cromosoma
+function calculateFitness(cromosoma) {
+    let clashes = 0;
+    const size = cromosoma.length;
 
-//////////////////////////////////////////////////////////////////////////////////////////
+    for (let i = 0; i < size; i++) {
+        for (let j = i + 1; j < size; j++) {
+            if (cromosoma[i] === cromosoma[j] || Math.abs(cromosoma[i] - cromosoma[j]) === Math.abs(i - j)) {
+                clashes++;
+            }
+        }
+    }
 
+    // Menos choques es mejor
+    return size * (size - 1) / 2 - clashes;
+}
+
+// Función de crossover (recombinación) de dos cromosomas
+function crossover(parent1, parent2) {
+    const size = parent1.length;
+    const crossoverPoint = Math.floor(Math.random() * (size - 1)) + 1;
+
+    const child1 = parent1.slice(0, crossoverPoint).concat(parent2.slice(crossoverPoint));
+    const child2 = parent2.slice(0, crossoverPoint).concat(parent1.slice(crossoverPoint));
+
+    return [child1, child2];
+}
+
+// Función de mutación de un cromosoma
+function mutate(cromosoma, mutationRate) {
+    const size = cromosoma.length;
+    for (let i = 0; i < size; i++) {
+        if (Math.random() < mutationRate) {
+            cromosoma[i] = Math.floor(Math.random() * size);
+        }
+    }
+}
 
 
 // Función para verificar si un cromosoma es una solución válida para N reinas
@@ -62,5 +96,4 @@ function esSolucionValida(cromosoma) {
 for(i = 0; i < tamanoPoblacion; i++){
     console.log("Cromosoma " + i + ": ", esSolucionValida(poblacionInicial[i]))
 }
-
 
